@@ -1,0 +1,14 @@
+# Follow symbolic links
+Options +FollowSymlinks 
+# Activate the rewrite engine
+RewriteEngine on
+# Rewrite URL: mode and action
+RewriteRule ^/?([a-z]+)/([a-z]+)\.php$ index.php?mode=$1&action=$2 [QSA]
+# Rewrite URL: mode without action
+RewriteRule ^/?([a-z]+)\/index\.php$ index.php?mode=$1 [QSA]
+# Rewrite URL: action without mode
+RewriteRule ^/?([a-z]+)\.php$ index.php?action=$1 [QSA]
+# Rewrite URL: mode without index.php
+RewriteRule ^/?([a-z]+)\/$ index.php?mode=$1 [QSA]
+# Error document: need to modify the full URL
+ErrorDocument 404 http://localhost/LInfo-l2/error.php

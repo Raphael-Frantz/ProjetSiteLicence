@@ -1,0 +1,58 @@
+.diplome {
+    display: inline-block;
+    border-radius: 5px;
+    border: 1px solid silver;
+}
+.ue {
+    padding: 5px;
+    float: left;
+}
+.semestre {
+    padding: 5px;
+}
+.header {
+    vertical-align: middle;
+    float: left;
+    height: 100px;
+    font-size: 200%;
+}
+.info, .math, .trans, .diff {
+    float: left;
+    border-width: 1px 0px 1px 1px;
+    border-style: solid;
+    border-color: black;
+}
+.info {    
+    background-color: #8db4e2;
+}
+.math {
+    background-color: #c4d79b;
+}
+.trans {
+    background-color: #e6b8b7;
+}
+.diff {
+    background-color: #fbe0b5;
+}
+.demi {
+    width: 90px;
+    height: 100px;
+    box-sizing : border-box;
+}
+.tiers {
+    width: 60px;
+    height: 100px;
+    box-sizing : border-box;
+}
+.complet {
+    width: 180px;
+    height: 100px;
+    box-sizing : border-box;
+}
+.mih {
+    height: 50px;
+    box-sizing : border-box;
+}
+div.ue div:last-child {
+    border-right-width: 1px;
+}

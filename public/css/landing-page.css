@@ -1,0 +1,158 @@
+a.m-auto {
+    text-decoration: none;
+}
+
+header.masthead {
+  position: relative;
+  background-color: #343a40;
+  background: url("../pictures/bg-masthead.jpg") no-repeat center center;
+  -webkit-background-size: cover;
+  -moz-background-size: cover;
+  -o-background-size: cover;
+  background-size: cover;
+  padding-top: 8rem;
+  padding-bottom: 8rem;
+}
+
+header.masthead .overlay {
+  position: absolute;
+  background-color: #212529;
+  height: 100%;
+  width: 100%;
+  top: 0;
+  left: 0;
+  opacity: 0;
+}
+
+header.masthead h1 {
+  padding-top: 1rem;
+  font-size: 2rem;
+  color: black;
+}
+
+header.masthead h2 {
+  font-size: 2rem;
+  color: black;
+}
+
+@media (min-width: 768px) {
+  header.masthead {
+    padding-top: 8rem;
+    padding-bottom: 2rem;
+  }
+  header.masthead h1 {
+    font-size: 3rem;
+    margin-top: 10rem;
+  }
+}
+
+.showcase .showcase-text {
+  padding: 3rem;
+}
+
+.showcase .showcase-img {
+  min-height: 30rem;
+  background-size: cover;
+}
+
+@media (min-width: 768px) {
+  .showcase .showcase-text {
+    padding: 7rem;
+  }
+}
+
+.features-icons {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.features-icons .features-icons-item {
+  max-width: 20rem;
+}
+
+.features-icons .features-icons-item .features-icons-icon {
+  height: 7rem;
+}
+
+.features-icons .features-icons-item .features-icons-icon img {
+  width: 90%;
+}
+
+.features-icons .features-icons-item:hover .features-icons-icon img {
+  width: 100%;
+}
+
+.mytitle {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+.mysection {
+  padding-bottom: 0rem;
+  margin-bottom: 0rem;
+}
+
+.testimonials {
+  padding-top: 7rem;
+  padding-bottom: 7rem;
+}
+
+.testimonials .testimonial-item {
+  max-width: 18rem;
+}
+
+.testimonials .testimonial-item img {
+  max-width: 12rem;
+  box-shadow: 0px 5px 5px 0px #adb5bd;
+}
+
+footer.footer {
+  padding-top: 4rem;
+  padding-bottom: 4rem;
+}
+
+img.zoom {
+	-webkit-transform: scale(1) rotate(0deg);
+	transform: scale(1) rotate(0deg);
+	-webkit-transition: .2s ease-in-out;
+	transition: .2s ease-in-out;    
+}
+img.zoom:hover {
+	-webkit-transform: scale(1.3) rotate(-15deg);
+	transform: scale(1.3) rotate(-15deg);
+}
+
+a.nav-link  {
+  font-size: 20px;
+  margin-right: 52px;
+}
+
+.vert {
+    writing-mode: vertical-rl;
+    text-orientation: sideways;
+}
+
+.lien {
+    text-align: right;
+    padding-bottom: 16px;
+}
+
+#upBoutton {
+  display: none;   /* Hidden by default */
+  position: fixed; /* Fixed/sticky position */
+  bottom: 20px;    /* Place the button at the bottom of the page */
+  right: 30px;     /* Place the button 30px from the right */
+  z-index: 99;     /* Make sure it does not overlap */
+  border: none;    /* Remove borders */
+  outline: none;   /* Remove outline */
+  background-color: red; /* Set a background color */
+  color: white; /* Text color */
+  cursor: pointer; /* Add a mouse pointer on hover */
+  padding: 15px; /* Some padding */
+  border-radius: 10px; /* Rounded corners */
+  font-size: 18px; /* Increase font size */
+}
+
+#upBoutton:hover {
+  background-color: #555; /* Add a dark-grey background on hover */
+}
