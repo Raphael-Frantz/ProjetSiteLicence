@@ -2,11 +2,91 @@
 // @need structure la structure d'un diplôme (UE/EC)
 
 if(!isset($data['structure']['semestre']))
-    $sem = 1;
-else    
+    $sem = 0;
+else
     $sem = $data['structure']['semestre'];
+if ($sem == 0){
+  if(!isset($data['structure']['semestre']))
+      $sem = 1;
+  else
+      $sem = $data['structure']['semestre'];
 
 ?>
+
+<table class="table table-bordered">
+  <thead class="thead-dark">
+    <tr>
+      <th scope="col"></th>
+<?php
+    $max = 0;
+    for($semestre = 1; $semestre <= count($data['structure']); $semestre++) {
+      for($numUE = 1; $numUE <= count($data['structure'][$sem]) ; $numUE++) {
+        if ($max < count($data['structure'][$sem][$numUE]['EC'])){
+          $max = count($data['structure'][$sem][$numUE]['EC']);
+        }
+      }
+    }
+
+    for($numUE = 1; $numUE < count($data['structure'][$sem]) ; $numUE++) {
+        echo <<<HTML
+          <th scope="col" colspan = "$max">UE $numUE</th>
+HTML;
+    }
+ ?>
+    </tr>
+  </thead>
+<tbody>
+
+<?php
+    for($sem = 1; $sem <= count($data['structure']); $sem++) {
+        echo <<<HTML
+            <tr>
+                <th scope="row">
+                    <span>Semestre $sem</span>
+                </th>
+HTML;
+        if(isset($data['structure'][$sem])) {
+            for($numUE = 1; $numUE <= count($data['structure'][$sem]); $numUE++) {
+                $ue = $data['structure'][$sem][$numUE];
+                    if($numUE < count($data['structure'][$sem])){
+                        echo <<<HTML
+                            </td>
+HTML;
+                    }
+                    for($numEC = 0; $numEC < count($data['structure'][$sem][$numUE]['EC']); $numEC++) {
+                        $ec = $data['structure'][$sem][$numUE]['EC'][$numEC];
+                        echo <<<HTML
+                            <td>
+                                <span id='EC_{$ec['id']}'>{$ec['code']} - {$ec['intitule']}</span>
+HTML;
+                        if($numEC < count($data['structure'][$sem][$numUE]['EC']) - 1){
+                            echo <<<HTML
+                                </td>
+HTML;
+                        }
+                    }
+              }
+        }
+    }
+?>
+</tbody>
+</table>
+
+
+<?php
+}
+// @need structure la structure d'un diplôme (UE/EC)
+
+if(!isset($data['structure']['semestre']))
+    $sem = 0;
+else
+    $sem = $data['structure']['semestre'];
+
+if ($sem != 0){
+
+?>
+
+
     <ul class="list-group">
 <?php
     echo <<<HTML
@@ -61,10 +141,11 @@ HTML;
                           <a class='btn btn-sm btn-outline-danger' href='javascript:supprimerEC({$ue['id']},{$ec['id']});' data-toggle="tooltip" data-placement="top" title="Supprimer l'EC"><i class="icon-trash"></i></a>
                         </span>
                       </div>
-                    </li>        
+                    </li>
 HTML;
             }
         }
     }
 ?>
     </ul>
+<?php } ?>

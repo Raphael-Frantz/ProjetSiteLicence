@@ -82,9 +82,10 @@ function updateContent(id, content) {
 function deleteElement(id) {
     $('[data-toggle="tooltip"]').tooltip('dispose');
     $('#' + id).remove();
-    $('[data-toggle="tooltip"]').tooltip();    
+    $('[data-toggle="tooltip"]').tooltip();
 }
 function selectionSemestre(sem) {
+
     if(request == null) {
         request = $.ajax({
                 type: 'POST',
@@ -101,8 +102,31 @@ function selectionSemestre(sem) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
+}
+
+function Organigramme() {
+    if(request == null) {
+        request = $.ajax({
+                type: 'POST',
+                url: WEB_PATH + 'diplomes/ws.php',
+                data: { 'mode' : 0},
+                dataType: 'html'
+            });
+        request.done(function (response, textStatus, jqXHR) {
+                updateContent('structure', response);
+                currentSem = sem;
+                request = null;
+            });
+        request.fail(function (jqXHR, textStatus, errorThrown){
+                console.log(jqXHR);
+                displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
+                request = null;
+            });
+    }
+
+    request = null;
 }
 
 function ajouterUE(sem) {
@@ -121,7 +145,7 @@ function ajouterUE(sem) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function supprimerEC(ue, ec) {
@@ -173,18 +197,18 @@ function supprimer() {
         if(mode == 3) {
             request.done(function (response, textStatus, jqXHR) {
                     $('[data-toggle="tooltip"]').tooltip('dispose');
-                    $('#structure').empty().html(content);                    
+                    $('#structure').empty().html(content);
                     request = null;
-                    
+
                     $("#S" + nbSemestres + "Label").remove();
                     nbSemestres--;
                     if(currentSem > nbSemestres)
                         currentSem = nbSemestres;
                     $("#S" + nbSemestres).prop("checked", true).trigger("click");
                     $('[data-toggle="tooltip"]').tooltip();
-                    
+
                     $("#S" + nbSemestres).change();
-                });            
+                });
         }
         else {
             request.done(function (response, textStatus, jqXHR) {
@@ -196,7 +220,7 @@ function supprimer() {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function monterUE(num) {
@@ -215,7 +239,7 @@ function monterUE(num) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function descendreUE(num) {
@@ -234,7 +258,7 @@ function descendreUE(num) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function ajouterEC(num) {
@@ -249,7 +273,7 @@ function ajouterEC(num) {
         request.done(function (response, textStatus, jqXHR) {
                 $('#inputEC').empty();
                 for(i = 0; i < response['liste'].length; i++)
-                    $('#inputEC').append(new Option(response['liste'][i]['nom'], 
+                    $('#inputEC').append(new Option(response['liste'][i]['nom'],
                                                     response['liste'][i]['id']));
                 $('#choixEC').modal("show");
                 //$('[data-toggle="tooltip"]').tooltip();
@@ -259,7 +283,7 @@ function ajouterEC(num) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function ajouter() {
@@ -278,7 +302,7 @@ function ajouter() {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function monterEC(ue, ec) {
@@ -297,7 +321,7 @@ function monterEC(ue, ec) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function descendreEC(ue, ec) {
@@ -316,7 +340,7 @@ function descendreEC(ue, ec) {
                 console.log(jqXHR);
                 displayErrorModal("Une erreur technique est survenue. Veuillez prévenir l'administrateur.");
                 request = null;
-            });       
+            });
     }
 }
 function ajouterSemestre() {
@@ -343,7 +367,7 @@ function ajouterSemestre() {
         request.fail(function (jqXHR, textStatus, errorThrown){
                 console.log(jqXHR);
                 request = null;
-            });       
+            });
     }
 }
 </script>
@@ -364,16 +388,26 @@ WebPage::addOnlineScript("var minSemestre = ".$data['diplome']->getMinSemestre()
 <div class="container mt-2">
     <div class="justify-content-between btn-toolbar mb-3">
       <div class="btn-group btn-group-toggle mr-2" data-toggle="buttons" id="semestreButtons">
+
 <?php
+$checked = "";
+$active = "";
+echo <<<HTML
+<label class="btn btn-secondary $active" id='Organigramme'>
+  <input type="radio" name="organigramme" id="Organigramme" autocomplete="off" {$checked} onchange="Organigramme()"> Organigramme
+</label>
+HTML;
+
 for($i = 1; $i <= $data['diplome']->getNbSemestres(); $i++) {
     if($i == 1) {
         $checked = "checked";
         $active = "active";
     }
-    else {         
+    else {
         $checked = "";
         $active = "";
     }
+
     $num = ($i - 1) + $data['diplome']->getMinSemestre();
     echo <<<HTML
         <label class="btn btn-secondary $active" id='S{$i}Label'>
