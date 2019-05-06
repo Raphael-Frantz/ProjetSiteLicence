@@ -1,7 +1,7 @@
   <div class="form-group row">
     <label for="inputNom" class="col-sm-2 col-form-label">Intitulé</label>
     <div class="col-sm-10">
-      <input type="text" class="form-control" id="inputIntitule" name="inputIntitule" placeholder="Nom" <?php 
+      <input type="text" class="form-control" id="inputIntitule" name="inputIntitule" placeholder="Nom" <?php
 if(isset($data['groupe']) && ($data['groupe']->getIntitule() != "")) echo " value='".$data['groupe']->getIntitule()."'"; ?>>
     </div>
   </div>
@@ -13,5 +13,13 @@ if(isset($data['groupe']) && ($data['groupe']->getIntitule() != "")) echo " valu
         <option value="<?php echo Groupe::GRP_TD; ?>" <?php if(isset($data['groupe']) && ($data['groupe']->getType() == Groupe::GRP_TD)) echo "selected=\"selected\""; ?>>TD</option>
         <option value="<?php echo Groupe::GRP_TP; ?>" <?php if(isset($data['groupe']) && ($data['groupe']->getType() == Groupe::GRP_TP)) echo "selected=\"selected\""; ?>>TP</option>
       </select>
-    </div>    
+    </div>
+  </div>
+  <div class="form-group row">
+    <label for="inputPlanning" class="col-sm-2 col-form-label">Planning</label>
+    <div class="col-sm-10">
+      <input type="text" class="form-control" id="inputPlanning" name="inputPlanning" placeholder="Planning (peut être laissé vide)"
+      <?php if(isset($data['groupe'])) echo "value='{$data['groupe']->getPlanning()}'"; ?>
+      >
+    </div>
   </div>

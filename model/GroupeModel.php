@@ -11,25 +11,29 @@ class GroupeModel {
     const DBF_TYPE = "gro_type";                 // Type
     const DBF_DIPLOME = "gro_diplome";           // Diplôme
     const DBF_SEMESTRE = "gro_semestre";         // Semestre
+    const DBF_PLANNING = "gro_planning";         // Planning
 
     /**
      * Retourne la liste des groupes d'un diplôme.
-     * @param diplome l'identifiant du diplôme
+     * @param diplome l'identifiant du diplôme (ou -1)
      * @param semestre le numéro du semestre (ou -1)
      * @param type le type du groupe (ou GRP_UNDEF)
      * @param ordre si 'true' ordonne les groupes par l'intitulé, sinon indexe par leur identifiant
      * @return la liste des groupes (ou null en cas d'erreur)
      */
-    public static function getList(int $diplome, int $semestre, int $type = Groupe::GRP_UNDEF, bool $ordre = true) : array {
+    public static function getList(int $diplome = -1, int $semestre = -1, int $type = Groupe::GRP_UNDEF, bool $ordre = true) : array {
         $DB = MyPDO::getInstance();
         
         $data = array(":diplome" => $diplome);
         $SQL = "SELECT ".self::DBF_ID." as id, ".
                          self::DBF_INTITULE." as intitule, ".
-                         self::DBF_TYPE." as type".
-               " FROM ".self::DB.
-               " WHERE ".self::DBF_DIPLOME."=:diplome";
+                         self::DBF_TYPE." as type, ".
+                         self::DBF_PLANNING." as planning".
+               " FROM ".self::DB;
 
+        if($diplome != -1) {
+            $SQL = $SQL . " WHERE " . self::DBF_DIPLOME . "=:diplome";
+        }
         if($type != Groupe::GRP_UNDEF) {
             $SQL .= " AND ".self::DBF_TYPE."=:type";
             $data[":type"] = $type;
@@ -64,7 +68,7 @@ class GroupeModel {
      */
     public static function fromArray(array $array) : Groupe {
         return new Groupe($array[self::DBF_ID], $array[self::DBF_INTITULE], $array[self::DBF_TYPE],
-                          $array[self::DBF_DIPLOME], $array[self::DBF_SEMESTRE]);
+                          $array[self::DBF_DIPLOME], $array[self::DBF_SEMESTRE], $array[self::DBF_PLANNING]);
     }
     
     /**
@@ -75,14 +79,15 @@ class GroupeModel {
 	public static function create(Groupe $groupe) : bool {
         $DB = MyPDO::getInstance();
         $SQL = "INSERT INTO `".self::DB."` (`".self::DBF_ID."`, `".self::DBF_INTITULE."`, `".
-               self::DBF_TYPE."`, `".self::DBF_DIPLOME."`, `".self::DBF_SEMESTRE."`) ".
-               "VALUES (NULL, :intitule, :type, :diplome, :semestre);";
+               self::DBF_TYPE."`, `".self::DBF_DIPLOME."`, `".self::DBF_SEMESTRE."`, `".self::DBF_PLANNING."`) ".
+               "VALUES (NULL, :intitule, :type, :diplome, :semestre, :planning);";
 
         if(($requete = $DB->prepare($SQL)) &&
            $requete->execute(array(":intitule" => $groupe->getIntitule(), 
                                    ":type" => $groupe->getType(),
                                    ":diplome" => $groupe->getDiplome(),
-                                   ":semestre" => $groupe->getSemestre()))) {
+                                   ":semestre" => $groupe->getSemestre(),
+                                   ":planning" => $groupe->getPlanning()))) {
             $groupe->setId($DB->lastInsertId());
             return true;
         }
@@ -113,10 +118,10 @@ class GroupeModel {
 	 * @return 'true' on success or 'false' on error
 	 */
 	public static function update(Groupe $groupe) : bool {
-        $data = array(array(self::DBF_INTITULE, $groupe->getIntitule()));
+        $data = array(array(self::DBF_INTITULE, $groupe->getIntitule()), array(self::DBF_PLANNING, $groupe->getPlanning()));
         
         return MyPDO::update(self::DB, $data, $groupe->getId(), self::DBF_ID);
-	}	
+	}
     
     /**
      * Supprime un groupe de la base.
@@ -131,6 +136,18 @@ class GroupeModel {
             return true;
         else
             return false;
+    }
+
+    /**
+     * Modifie le planning d'un groupe
+     * @param id l'identifiant du groupe
+     * @param planning l'url du planning du groupe
+     * @return 'true' on success or 'false' on error
+     */
+    public static function updatePlanning(int $id, string $planning) : bool {
+        $data = array(array(self::DBF_PLANNING, $planning));
+
+        return MyPDO::update(self::DB, $data, $id, self::DBF_ID);
     }
 
 } // class GroupeModel

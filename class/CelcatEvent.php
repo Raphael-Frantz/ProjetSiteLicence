@@ -1,130 +1,181 @@
 <?php
 /**
- * Class SeanceXML Représente une séance dans l'emploi du temps XML
+ * Class CelcatEvent Représente une séance dans l'emploi du temps
  */
-class SeanceXML {
 
-    private $id = '';
-    private $date = '';
-    private $day = '';
-    private $starttime = '';
-    private $endtime = '';
-    private $category = '';
-    private $modules = array();
-    private $rooms = array();
-    private $groups = array();
+class CelcatEvent {
 
-    public static function fromEvent(DOMElement $element) : SeanceXML {
-        $seance = new SeanceXML();
+    private $id = -1;               // Identifiant
+    private $groupeID = -1;         // ID du groupe
+    private $debut = -1;            // Date de début
+    private $fin = -1;              // Date de fin
+    private $type = '';             // Nom du type
+    private $couleur = '';          // Couleur
+    private $ecs = array();         // Nom des EC
+    private $salles = array();      // Nom des salle
+
+    /**
+     * Parsing du noeud <event> celcat
+     * Structure typique:
+     *
+     * <event id="196817" timesort="10151215" colour="FFFFBF" date="03/09/2018" ecs="26" ecc="16" er="0" sca="2" scb="2">
+     *      <day>0</day>
+     *      <prettytimes>10:15-12:15 [TD]</prettytimes>
+     *      <starttime>10:15</starttime>
+     *      <endtime>12:15</endtime>
+     *      <category>[TD]</category>
+     *      <prettyweeks></prettyweeks>
+     *      <rawweeks>NYNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNNN</rawweeks>
+     *      <resources>
+     *          <module>
+     *              <item>
+     *                  <a href="m88888.html">INFO0101</a>
+     *              </item>
+     *          </module>
+     *          <room>
+     *              <item>salle 1719 (Moulin de la Housse (Sciences et STAPS))</item>
+     *          </room>
+     *      </resources>
+     *  </event>
+     *
+     * @param DOMElement $element
+     * @param int $idGroupe
+     * @return CelcatEvent
+     */
+    public static function fromTag(DOMElement $element, int $idGroupe) : CelcatEvent {
+        $seance = new CelcatEvent($idGroupe);
+        $seance->setTimeFromTag($element);
+        $seance->setTypeFromTag($element);
+        $seance->setCouleurFromTag($element);
+        $seance->setResourcesFromTag($element);
+
+        return $seance;
+    }
+
+
+    /**
+     * @param DOMElement $resource <event>
+     * @param nomElement balise html à rechercher
+     * @return array Un tableau du contenu des éléments <item> dans la balise à rechercher.
+     *               Si l'élément contenu dans <item> est un <a>, récupère uniquement le contenu texte.
+     */
+    public static function listerItemsXML(DOMElement $resource, string $nomElement) : array {
+        $resultat = array();
+        $list = $resource->getElementsByTagName($nomElement);
+
+        if(!is_null($list) && $list->count() != 0) {
+            foreach ($list->item(0)->getElementsByTagName('item') as $item) {
+
+                if(!is_null($item)) {
+
+                    $as = $item->getElementsByTagName('a');
+
+                    if (!is_null($as) && $as->count() != 0) {
+                        $resultat[] = trim($as->item(0)->textContent);
+                    } else {
+                        $resultat[] = trim($item->textContent);
+                    }
+                }
+            }
+        }
+
+        return $resultat;
+    }
+
+    public function __construct(int $idGroupe) {
+        $this->groupeID = $idGroupe;
+    }
+
+    public function setTimeFromTag(DOMElement $element) : void {
+
+        $date = trim($element->getAttribute('date'));
+        $day = trim($element->getElementsByTagName('day')->item(0)->textContent);
+        $debut = trim($element->getElementsByTagName('starttime')->item(0)->textContent);
+        $fin = trim($element->getElementsByTagName('endtime')->item(0)->textContent);
+        list($heureDebut, $minutesDebut) = sscanf($debut, "%d:%d");
+        list($heureFin, $minutesFin) = sscanf($fin, "%d:%d");
+        list($jour, $mois, $annee) = sscanf($date, "%d/%d/%d");
+
+        $time = strtotime($mois . '/' . $jour . '/' . $annee . ' + ' . $day . ' days');
+
+        $timeDebut = $time;
+        $timeDebut += $heureDebut * 60 * 60 + $minutesDebut * 60;
+        $this->debut = $timeDebut;
+
+        $timeFin = $time;
+        $timeFin += $heureFin * 60 * 60 + $minutesFin * 60;
+        $this->fin = $timeFin;
+    }
+
+    public function setTypeFromTag(DOMElement $element) : void {
+        $this->type = trim($element->getElementsByTagName('category')->item(0)->textContent);
+    }
+
+    public function setCouleurFromTag(DOMElement $element) : void {
+        $this->couleur = '#' . trim($element->getAttribute('colour'));
+    }
+
+    public function setResourcesFromTag(DOMElement $element) : void {
+        // Récpupère les ressources (modules, salles)
         $resources = $element->getElementsByTagName('resources');
 
         if($resources->count() != 0) {
             $resource = $resources->item(0);
-            $seance->modules = CelcatFinder::listerItemsXML($resource, 'module');
-            $seance->rooms = CelcatFinder::listerItemsXML($resource, 'room');
-            $seance->groups = CelcatFinder::listerItemsXML($resource, 'group');
+            $this->ecs = self::listerItemsXML($resource, 'module');
+            $this->salles = self::listerItemsXML($resource, 'room');
         }
-
-        $seance->id = trim($element->getAttribute('id'));
-        $seance->date = trim($element->getAttribute('date'));
-        $seance->day = trim($element->getElementsByTagName('day')->item(0)->textContent);
-        $seance->starttime = trim($element->getElementsByTagName('starttime')->item(0)->textContent);
-        $seance->endtime = trim($element->getElementsByTagName('endtime')->item(0)->textContent);
-        $seance->category = trim($element->getElementsByTagName('category')->item(0)->textContent);
-        return $seance;
-    }
-
-    public function __construct(string $id = '', string $date = '',
-                                string $day = '', string $starttime = '', string $endtime = '',
-                                string $category = '',
-                                array $modules = array(), array $rooms = array(), array $groups = array()) {
-        $this->id = $id;
-        $this->date = $date;
-        $this->day = $day;
-        $this->starttime = $starttime;
-        $this->endtime = $endtime;
-        $this->category = $category;
-        $this->modules = $modules;
-        $this->rooms = $rooms;
-        $this->groups = $groups;
-    }
-
-    /**
-     * @return L'identifiant Celcat
-     */
-    public function getId(): int {
-        return intval($this->id);
-    }
-
-    /**
-     * @return La date du Lundi de la semaine
-     */
-    public function getWeekDate(): int {
-        list($jour, $mois, $annee) = sscanf($this->date, "%d/%d/%d");
-        $date = strtotime("$mois/$jour/$annee");
-        return $date;
-    }
-
-    /**
-     * @return le numéro du jour de la semaine
-     * Lundi=0, Mardi=1, Mercredi=2, Jeudi=3, Vendredi=4, Samedi=5
-     */
-    public function getDay(): string {
-        return intval($this->day);
     }
 
     /**
      * @return le timestamp du début de la séance
      */
-    public function getStarttime(): int {
-        list($heureDebut, $minutesDebut) = sscanf($this->starttime, "%d:%d");
-        $weekTime = $this->getWeekDate();
-        $day = $this->getDay();
-        $time = strtotime( '+ ' . $day . ' days', $weekTime);
-        $time += $heureDebut * 60;
-        $time += $minutesDebut;
-        return $time;
+    public function getDateDebut(): int {
+        return $this->debut;
     }
 
     /**
      * @return le timestamp de fin de la séance
      */
-    public function getEndtime(): string {
-        list($heureFin, $minutesFin) = sscanf($this->endtime, "%d:%d");
-        $weekTime = $this->getWeekDate();
-        $day = $this->getDay();
-        $time = strtotime( '+ ' . $day . ' days', $weekTime);
-        $time += $heureFin * 60;
-        $time += $minutesFin;
-        return $time;
+    public function getDateFin(): int {
+        return $this->fin;
     }
 
     /**
-     * @return string La catégorie de la séance (TD, TP, CM)
+     * @return string Le type de la séance (TD, TP, CM)
      */
-    public function getCategory(): string {
-        return $this->category;
+    public function getType(): string {
+        return $this->type;
     }
 
     /**
-     * @return L'ID du module (ou -1 si non trouvé).
+     * @return Le nom de l'EC
      */
-    public function getModuleID(): int {
-        $id = -1;
-        if(count($this->modules) != 0) {
-            $list = array(array('code' => $this->modules[0]));
-            if(ECModel::getListFromCode($list)) {
-                $id = $list[0]['id'];
-            }
-        }
-
-        return $id;
+    public function getEC() : string {
+        return $this->ecs[0] ?? '';
     }
 
     /**
      * @return Le nom de la salle
      */
-    public function getRoom(): string {
-        return $this->rooms[0];
+    public function getSalle(): string {
+        return $this->salles[0] ?? '';
+    }
+
+    /**
+     * @return L'ID du groupe
+     */
+    public function getGroupeId() : string {
+        return $this->groupeID;
+    }
+
+    /**
+     * @return La couleur de la séance
+     */
+    public function getCouleur() : string {
+        return $this->couleur ?? '';
+    }
+
+    public function setId(int $id) : void {
+        $this->id = $id;
     }
 }

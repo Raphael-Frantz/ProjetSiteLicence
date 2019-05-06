@@ -13,13 +13,15 @@ class GroupesController {
         $inputType = Groupe::GRP_UNDEF;
         $inputDiplome = -1;
         $inputSemestre = -1;
+        $inputPlanning = "";
         
         if(isset($_POST['inputIntitule'])) $inputIntitule = $_POST['inputIntitule'];
         if(isset($_POST['inputType'])) $inputType = intval($_POST['inputType']);
+        if(isset($_POST['inputPlanning'])) $inputPlanning = $_POST['inputPlanning'];
         if(isset($_SESSION['current']['diplome'])) $inputDiplome = $_SESSION['current']['diplome'];
         if(isset($_SESSION['current']['semestre'])) $inputSemestre = $_SESSION['current']['semestre'];
-        
-        return new Groupe(-1, $inputIntitule, $inputType, $inputDiplome, $inputSemestre);
+
+        return new Groupe(-1, $inputIntitule, $inputType, $inputDiplome, $inputSemestre, $inputPlanning);
     }
     
     /**
@@ -333,6 +335,84 @@ class GroupesController {
         }
         
         Controller::push("", $view, $data, "");
+    }
+
+    /**
+     * Importe et actualise les URL des planning des groupes depuis Celcat
+     * #RIGHTS# : administrateur
+     */
+    public static function celcat() {
+
+        if(!UserModel::estAdmin())
+            Controller::goTo("", "", "Vous n'avez pas les droits pour réaliser cette action.");
+
+        if(!isset($_POST['inputSubmit']))
+            Controller::goTo("", "", "Cette page n'est accessible que par le formulaire.");
+
+        $start = microtime(true);
+
+        if(isset($_POST['inputImporterPlanning'])) {
+            $trouves = 0;
+            $modifies = 0;
+            $data = CelcatFinder::getAllGroups();
+            $groups = GroupeModel::getList();
+
+            foreach ($groups as $groupe) {
+
+                foreach ($data as $xml) {
+
+                    if ($xml->getCode() == $groupe['intitule']) {
+
+                        $trouves++;
+
+                        if ($groupe['planning'] != $xml->getPlanningURL()) {
+
+                            $modifies++;
+
+                            if (!GroupeModel::updatePlanning($groupe['id'], $xml->getPlanningURL())) {
+                                WebPage::setCurrentErrorMsg("Une erreur s'est produite dans la base de données.");
+                            }
+                        }
+                    }
+                }
+            }
+
+            $temps = microtime(true) - $start;
+            $temps = round($temps, 5);
+            WebPage::setCurrentMsg("$trouves planning importés(s), $modifies planning modifiés(s) en $temps secondes.");
+        }
+        else if(isset($_POST['inputImporterSeances'])) {
+
+            $trouves = 0;
+
+            $groupes = GroupeModel::getList();
+            foreach($groupes as $groupe) {
+                $planning = $groupe['planning'];
+                if(!empty($planning)) {
+
+                    $seances = CelcatFinder::getAllSeances($planning, $groupe['id']);
+
+                    if(!is_null($seances)) {
+
+                        CCSeanceModel::deleteSeancesFromGroupe($groupe['id']);
+
+                        foreach($seances as $seance) {
+                            CCSeanceModel::create($seance);
+                            $trouves++;
+                        }
+                    }
+                }
+            }
+
+            $temps = microtime(true) - $start;
+            $temps = round($temps, 5);
+            WebPage::setCurrentMsg("$trouves séances importée(s) en $temps secondes");
+        }
+        else {
+            Controller::goTo("errors/404.php", "");
+        }
+
+        Controller::goTo("groupes/index.php");
     }
     
     /**

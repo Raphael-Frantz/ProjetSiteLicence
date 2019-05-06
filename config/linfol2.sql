@@ -55,6 +55,49 @@ INSERT INTO `inf_diplome` (`dip_id`, `dip_intitule`, `dip_minsemestre`, `dip_nbs
 -- --------------------------------------------------------
 
 --
+-- Structure de la table `inf_cc_sean`
+--
+
+DROP TABLE IF EXISTS `inf_cc_sean`;
+CREATE TABLE IF NOT EXISTS `inf_cc_sean` (
+  `cc_sean_id` int(11) NOT NULL AUTO_INCREMENT,
+  `cc_sean_ec` int(11) NOT NULL,
+  `cc_sean_groupe` int(11) NOT NULL,
+  `cc_sean_type` int(11) NOT NULL,
+  `cc_sean_salle` int(11) NOT NULL,
+  `cc_sean_debut` int(11) NOT NULL,
+  `cc_sean_fin` int(11) NOT NULL,
+  PRIMARY KEY (`cc_sean_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
+-- Structure de la table `inf_salle`
+--
+
+DROP TABLE IF EXISTS `inf_salle`;
+CREATE TABLE IF NOT EXISTS `inf_salle` (
+  `rom_id` int(11) NOT NULL AUTO_INCREMENT,
+  `rom_intitule` varchar(150),
+  PRIMARY KEY(`rom_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+--
+-- Structure de la table `inf_type_sean`
+--
+
+DROP TABLE IF EXISTS `inf_type_sean`;
+CREATE TABLE IF NOT EXISTS `inf_type_sean` (
+  `type_sean_id` int(11) NOT NULL AUTO_INCREMENT,
+  `type_sean_intitule` varchar(50),
+  `type_sean_couleur` varchar(30),
+  PRIMARY KEY(`type_sean_id`)
+) ENGINE=MyISAM DEFAULT CHARSET=utf8;
+
+-- --------------------------------------------------------
+
+--
 -- Structure de la table `inf_ec`
 --
 
@@ -2129,6 +2172,7 @@ CREATE TABLE IF NOT EXISTS `inf_groupe` (
   `gro_type` int(11) NOT NULL,
   `gro_diplome` int(11) NOT NULL,
   `gro_semestre` int(11) NOT NULL,
+  `gro_planning` varchar(100) DEFAULT '',
   PRIMARY KEY (`gro_id`)
 ) ENGINE=MyISAM AUTO_INCREMENT=77 DEFAULT CHARSET=utf8;
 

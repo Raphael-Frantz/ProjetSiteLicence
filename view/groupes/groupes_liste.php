@@ -18,6 +18,14 @@ HTML;
 }
 else {
     echo <<<HTML
+    
+<div class="alert alert-warning alert-dismissible fade show text-center" role="alert" id="edtNotAvailable" style="display: none;">
+  Il n'existe pas d'emploi du temps pour ce groupe.
+  <button type="button" class="close" aria-hidden="true" aria-label="Close" onclick="javascript:$('#edtNotAvailable').hide()">
+    <span>&times;</span>
+  </button>
+</div>
+
 <table class="table table-striped">
   <thead>
     <tr>
@@ -31,12 +39,20 @@ HTML;
     $lienSupp = WEB_PATH."groupes/supprimer.php";
     $lienGrp = WEB_PATH."groupes/etudiants.php";
     foreach($data['groupes'] as $groupe) {
+        $edtAction = $groupe['planning'];
+        if(empty($edtAction)) {
+            $edtAction = "javascript:$('#edtNotAvailable').show()";
+        }
         $type = Groupe::type2String($groupe['type']);
         echo <<<HTML
         <tr id='ligne{$groupe['id']}'>
           <th scope='row'>{$groupe['intitule']}</th>
           <td>{$type}</td>
           <td class="text-right">
+            <a class="btn btn-sm btn-outline-primary mr-2" data-toggle='tooltip' 
+               data-placement='top' title="Emploi du temps" href="{$edtAction}">
+                <i class="icon-calendar"></i>
+            </a>
             <button name='idModi' type='submit' class='btn btn-sm btn-outline-primary mr-2' data-toggle='tooltip' 
                     data-placement='top' title="Modifier le groupe" form='controlForm' formaction='$lienModif' 
                     value='{$groupe['id']}'>

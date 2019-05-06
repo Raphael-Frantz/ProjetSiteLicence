@@ -2,7 +2,7 @@
 /**
  * Class GroupeXML Représente un groupe dans l'emploi du temps
  */
-class GroupeXML {
+class CelcatGroupe {
 
     const INTITULE_PREFIX = "Groupe:";
 
@@ -23,7 +23,7 @@ class GroupeXML {
         return trim(substr($this->intitule, strlen(self::INTITULE_PREFIX)));
     }
 
-    public function getPlanningXML() : string {
+    public function getPlanningURL() : string {
         return CelcatFinder::CELCAT_URL_PREFIX . substr($this->fichier, 0, -strlen(".html")) . ".xml";
     }
 }
