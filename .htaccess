@@ -11,4 +11,4 @@ RewriteRule ^/?([a-z]+)\.php$ index.php?action=$1 [QSA]
 # Rewrite URL: mode without index.php
 RewriteRule ^/?([a-z]+)\/$ index.php?mode=$1 [QSA]
 # Error document: need to modify the full URL
-ErrorDocument 404 http://localhost/LInfo-l2/error.php
+ErrorDocument 404 http://localhost/error.php

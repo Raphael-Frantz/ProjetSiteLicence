@@ -72,39 +72,55 @@ function selectionSemestre() {
 }
 </script>
 
-<form class="form-inline justify-content-center mt-2">
-  <div class="form-group mb-2">
-    <select class="form-control mr-2" id="diplome" name="diplome" onchange="javascript:selectionDiplome()">
-<?php
-if(!isset($data['diplome']) || ($data['diplome'] == null))
-    echo "<option id='defautDiplome' value='-1'>Sélectionnez un diplôme</option>";
+<div class="text-center">
+    <form class="form-inline mt-2 d-inline-block">
+      <div class="form-group mb-2">
+        <select class="form-control mr-2" id="diplome" name="diplome" onchange="javascript:selectionDiplome()">
+        <?php
+        if(!isset($data['diplome']) || ($data['diplome'] == null))
+            echo "<option id='defautDiplome' value='-1'>Sélectionnez un diplôme</option>";
 
-foreach($data['diplomes'] as $diplome) {
-    echo "<option value=\"{$diplome['id']}\"";
-    if(isset($data['diplome']) && ($data['diplome']->getId() == $diplome['id']))
-        echo " selected=\"selected\"";
-    echo ">{$diplome['intitule']}</option>";
-}
-?>
-    </select>
-    <select <?php
-if(!isset($data['nbSemestres'])) echo "style=\"display: none;\"";
-?> class="form-control mr-2" id="semestre" name="semestre" onchange="javascript:selectionSemestre()">
-<?php
-if(isset($data['nbSemestres'])) {
-    echo "<option value='-1'>Tous les semestres</option>";
-    for($i = 1; $i <= $data['nbSemestres']; $i++) {
-        echo "<option value='$i'";
-        if($data['semestre'] == $i)
-            echo " selected=\"selected\"";
-        echo ">Semestre ".($i + $data['minSemestre'] - 1)."</option>";
-    }
-}
-?>
-    </select>
-     <a id="ajouterLink" class="btn btn-outline-primary mr-2" href="ajouter.php">Créer un groupe</a>
-  </div>
-</form>
+        foreach($data['diplomes'] as $diplome) {
+            echo "<option value=\"{$diplome['id']}\"";
+            if(isset($data['diplome']) && ($data['diplome']->getId() == $diplome['id']))
+                echo " selected=\"selected\"";
+            echo ">{$diplome['intitule']}</option>";
+        }
+        ?>
+        </select>
+        <select <?php
+        if(!isset($data['nbSemestres'])) echo "style=\"display: none;\"";
+        ?> class="form-control mr-2" id="semestre" name="semestre" onchange="javascript:selectionSemestre()">
+        <?php
+        if(isset($data['nbSemestres'])) {
+            echo "<option value='-1'>Tous les semestres</option>";
+            for($i = 1; $i <= $data['nbSemestres']; $i++) {
+                echo "<option value='$i'";
+                if($data['semestre'] == $i)
+                    echo " selected=\"selected\"";
+                echo ">Semestre ".($i + $data['minSemestre'] - 1)."</option>";
+            }
+        }
+        ?>
+        </select>
+        <a id="ajouterLink" class="btn btn-outline-primary mr-2" href="ajouter.php">Créer un groupe</a>
+        </div>
+    </form>
+
+    <form class="form-inline mt-2 d-inline-block" method="POST" action="celcat.php">
+        <div class="form-group mb-2">
+            <input type="hidden" name="inputImporterPlanning" value="1">
+            <input type="submit" class="btn btn-outline-primary mr-2" value="Importer les Planning" name="inputSubmit">
+        </div>
+    </form>
+
+    <form class="form-inline mt-2 d-inline-block" method="POST" action="celcat.php">
+        <div class="form-group mb-2">
+            <input type="hidden" name="inputImporterSeances" value="1">
+            <input type="submit" class="btn btn-outline-primary mr-2" value="Importer les Séances" name="inputSubmit">
+        </div>
+    </form>
+</div>
 
 <div id="contenu"></div>
 

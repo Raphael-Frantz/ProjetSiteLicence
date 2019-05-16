@@ -98,6 +98,7 @@ class InscriptionGroupeModel {
                          GroupeModel::DBF_INTITULE." as intitule, ".
                          GroupeModel::DBF_TYPE." as type, ".
                          GroupeModel::DBF_SEMESTRE." as semestre, ".
+                         GroupeModel::DBF_PLANNING." as planning, ".
                          DiplomeModel::DBF_ID." as idDiplome, ".
                          DiplomeModel::DBF_INTITULE." as diplome, ".
                          DiplomeModel::DBF_MINSEMESTRE." as minSemestre".

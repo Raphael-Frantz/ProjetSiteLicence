@@ -15,6 +15,7 @@ class Groupe {
     private $type;                               // Type (constantes GRP_*)
     private $diplome;                            // Diplôme
     private $semestre;                           // Semestre
+    private $planning;                           // Planning
 
     /**
      * Crée un nouveau groupe.
@@ -23,13 +24,15 @@ class Groupe {
      * @param type le type du groupe (constantes GRP_*)
      * @param diplome l'identifiant du diplome
      * @param semestre le numéro de semestre
+     * @param planning l'URL du planning
      */
-	function __construct(int $id = -1, string $intitule = "", int $type = GRP_UNDEF, int $diplome = -1, int $semestre = 1) {
+	function __construct(int $id = -1, string $intitule = "", int $type = GRP_UNDEF, int $diplome = -1, int $semestre = 1, string $planning = '') {
 		$this->id = $id;
         $this->intitule = $intitule;
         $this->type = $type;
         $this->diplome = $diplome;
         $this->semestre = $semestre;
+        $this->planning = $planning;
 	}
     
     /**
@@ -46,6 +49,14 @@ class Groupe {
      */
     public function setId(int $id) : void {
         $this->id = $id;
+    }
+
+    /**
+     * Modifie le planning
+     * @param planning le planning
+     */
+    public function setPlanning(string $planning) : void {
+        $this->planning = $planning;
     }
     
     /**
@@ -101,6 +112,14 @@ class Groupe {
      */
     public function getSemestre() : int {
         return $this->semestre;
+    }
+
+    /**
+     * Retourne le planning
+     * @return le planning
+     */
+    public function getPlanning() : string {
+        return $this->planning;
     }
     
     /**

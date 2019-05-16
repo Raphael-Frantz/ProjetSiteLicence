@@ -99,6 +99,7 @@ if(UserModel::isConnected()) {
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Mes groupes") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/groupes.php">Mes groupes</a>
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Mes IP") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/ip.php">Mes IP</a>
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Mon présentiel") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/presentiel.php">Mon présentiel</a>
+          <a class="dropdown-item <?php if(WebPage::getTitle() == "Mon emploi du temps") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/emploidutemps.php">Mon emploi du temps</a>
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Changer de mot de passe") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/motdepasse.php">Changer de mot de passe</a>
         </div>
       </li>
