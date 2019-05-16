@@ -50,7 +50,7 @@ WebPage::addJSScript("public/js/etudiants.js");
 
 <form class="form-inline justify-content-center mt-2">
   <div class="form-group mb-2">
-    <select class="form-control mr-2" id="diplome" name="diplome" onchange="javascript:selectionDiplome(false)">
+    <select class="form-control mr-2 my-2" id="diplome" name="diplome" onchange="javascript:selectionDiplome(false)">
         <option value="-1">Tous les diplômes</option>
 <?php
 foreach($data['diplomes'] as $diplome) {
@@ -61,7 +61,7 @@ foreach($data['diplomes'] as $diplome) {
 }
 ?>
     </select>
-    <select class="form-control mr-2" id="semestre" name="semestre" onchange="javascript:selectionSemestre()">
+    <select class="form-control mr-2 my-2" id="semestre" name="semestre" onchange="javascript:selectionSemestre()">
 <?php
 if(isset($data['nbSemestres'])) {
     echo "<option value='-1'>Tous les semestres</option>";
@@ -74,9 +74,9 @@ if(isset($data['nbSemestres'])) {
 }
 ?>
     </select>
-     <a id="ajouterLink" class="btn btn-outline-primary mr-2" href="ajouter.php">Créer un étudiant</a>
-     <a id="ajouterLink" class="btn btn-outline-primary mr-2" href="javascript:importer()">Importer</a>
-     <a id="inscrireLink" class="btn btn-outline-primary mr-2" style="display: none;" href="<?php echo WEB_PATH; ?>etudiants/inscrire.php">Inscrire</a>
+     <a id="ajouterLink" class="btn btn-outline-primary mr-2 my-2" href="ajouter.php">Créer un étudiant</a>
+     <a id="ajouterLink" class="btn btn-outline-primary mr-2 my-2" href="javascript:importer()">Importer</a>
+     <a id="inscrireLink" class="btn btn-outline-primary mr-2 my-2" style="display: none;" href="<?php echo WEB_PATH; ?>etudiants/inscrire.php">Inscrire</a>
   </div>
 </form>
 
