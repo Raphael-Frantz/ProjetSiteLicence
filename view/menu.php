@@ -9,7 +9,7 @@
     <ul class="navbar-nav">
       <li class="nav-item <?php if(WebPage::getTitle() == "Accueil") echo "active"; ?>">
         <a class="nav-link" href="<?php echo WEB_PATH; ?>accueil/index.php">Accueil</a>
-      </li>          
+      </li>
 <?php
 if(UserModel::isConnected()) {
     if(UserModel::estEnseignant()) {
@@ -73,7 +73,7 @@ if(UserModel::isConnected()) {
           <a class="dropdown-item <?php if(WebPage::getTitle() == "IP des étudiants") echo "active"; ?>" href="<?php echo WEB_PATH; ?>tutorat/etudiants.php">IP des étudiants</a>
 <?php
         }
-?>        
+?>
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Liste des ECs") echo "active"; ?>" href="<?php echo WEB_PATH; ?>ecs/liste.php">Liste des ECs</a>
 <?php
         if(UserModel::estEnseignant()) {
@@ -82,7 +82,7 @@ if(UserModel::isConnected()) {
           <a class="dropdown-item <?php if(WebPage::getTitle() == "Changer de mot de passe") echo "active"; ?>" href="<?php echo WEB_PATH; ?>mesinfos/motdepasse.php">Changer de mot de passe</a>
 <?php
         }
-?>          
+?>
         </div>
       </li>
 <?php
@@ -104,13 +104,13 @@ if(UserModel::isConnected()) {
       </li>
 <?php
     }
-    
+
     if(UserModel::isTemporary()) {
 ?>
       <li class="nav-item">
         <a class="btn btn-warning" href="<?php echo WEB_PATH; ?>users/role.php">Switch</a>
       </li>
-<?php        
+<?php
     }
     else {
 ?>
