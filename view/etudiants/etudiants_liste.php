@@ -54,7 +54,7 @@ HTML;
         echo <<<HTML
           <td>{$etudiant['email']}</td>
           <td class="text-right">
-            <button name='idModi' type='submit' class='btn btn-sm btn-outline-primary mr-2' data-toggle='tooltip' 
+            <button name='idModi' type='submit' class='btn btn-sm btn-outline-warning mr-2' data-toggle='tooltip' 
                     data-placement='top' title="Modifier l'étudiant" form='controlForm' formaction='$lienModif' 
                     value='{$etudiant['id']}'>
               <i class='icon-wrench'></i>

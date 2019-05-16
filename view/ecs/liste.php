@@ -68,7 +68,7 @@ foreach($data['ECS'] as $ECS) {
     <td class='text-right'>
       <a data-toggle='tooltip' data-placement='top' title="Informations" 
        href="javascript:setEC({$ECS['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>
-        <i class='icon-wrench'></i>
+        <i class='icon-info'></i>
       </a>
       <a data-toggle='tooltip' data-placement='top' title="Liste des étudiants" 
        href="javascript:setEC({$ECS['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary'>

@@ -46,7 +46,7 @@ WebPage::addJSScript("public/js/active-tooltips.js");
 foreach($data['ECS'] as $ECS) {
   echo "<tr><td>{$ECS['code']} - {$ECS['intitule']}</td>";
   echo "<td class='text-right'>";
-  echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title=\"Éditer l'EC\" form='controlForm' formaction='".WEB_PATH."ecs/modifier.php' value='{$ECS['id']}'><i class='icon-wrench'></i></button>&nbsp;";
+  echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-warning' data-toggle='tooltip' data-placement='top' title=\"Éditer l'EC\" form='controlForm' formaction='".WEB_PATH."ecs/modifier.php' value='{$ECS['id']}'><i class='icon-wrench'></i></button>&nbsp;";
   if(UserModel::estAdmin())
     echo "<button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger' data-toggle='tooltip' data-placement='top' title=\"Supprimer l'EC\" form='controlForm' formaction='".WEB_PATH."ecs/supprimer.php' value='{$ECS['id']}'><i class='icon-trash'></i></button>";
   echo "</td>";

@@ -48,7 +48,7 @@ foreach($data['diplomes'] as $diplome) {
   echo "<tr><td>".$diplome['intitule']."</td>";
   echo "<td class='text-right'>";
   if(UserModel::estAdmin())
-    echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title='Éditer le diplôme' form='controlForm' formaction='".WEB_PATH."diplomes/modifier.php' value='{$diplome['id']}'><i class='icon-wrench'></i></button>&nbsp;";
+    echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-warning' data-toggle='tooltip' data-placement='top' title='Éditer le diplôme' form='controlForm' formaction='".WEB_PATH."diplomes/modifier.php' value='{$diplome['id']}'><i class='icon-wrench'></i></button>&nbsp;";
   echo "<button name='idEdit' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title='Structure du diplôme' form='controlForm' formaction='".WEB_PATH."diplomes/structure.php' value='{$diplome['id']}'><i class='icon-list'></i></button>&nbsp;";
   if(UserModel::estAdmin())
     echo "<button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger' data-toggle='tooltip' data-placement='top' title='Supprimer le diplôme' form='controlForm' formaction='".WEB_PATH."diplomes/supprimer.php' value='{$diplome['id']}'><i class='icon-trash'></i></button>";

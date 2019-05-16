@@ -46,7 +46,7 @@ foreach($data['users'] as $user) {
   echo "<td>{$user['email']}</td>";
   echo "<td class='text-right'>";
   echo "<a href='mailto:{$user['email']}' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title='Envoyer un email'><i class='icon-envelope'></i></a>&nbsp;";
-  echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title=\"Éditer l'enseignant\" form='controlForm' formaction='".WEB_PATH."users/modifier.php' value='{$user['id']}'><i class='icon-wrench'></i></button>&nbsp;";
+  echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-warning' data-toggle='tooltip' data-placement='top' title=\"Éditer l'enseignant\" form='controlForm' formaction='".WEB_PATH."users/modifier.php' value='{$user['id']}'><i class='icon-wrench'></i></button>&nbsp;";
   echo "<button name='idRole' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' data-placement='top' title='Prendre son rôle' form='controlForm' formaction='".WEB_PATH."users/role.php' value='{$user['id']}'><i class='icon-user'></i></button>&nbsp;";
   echo "<button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger' data-toggle='tooltip' data-placement='top' title=\"Supprimer l'enseignant\" form='controlForm' formaction='".WEB_PATH."users/supprimer.php' value='{$user['id']}'><i class='icon-trash'></i></button>";
   echo "</td>";

@@ -53,7 +53,7 @@ HTML;
                data-placement='top' title="Emploi du temps" href="{$edtAction}">
                 <i class="icon-calendar"></i>
             </a>
-            <button name='idModi' type='submit' class='btn btn-sm btn-outline-primary mr-2' data-toggle='tooltip' 
+            <button name='idModi' type='submit' class='btn btn-sm btn-outline-warning mr-2' data-toggle='tooltip' 
                     data-placement='top' title="Modifier le groupe" form='controlForm' formaction='$lienModif' 
                     value='{$groupe['id']}'>
               <i class='icon-wrench'></i>

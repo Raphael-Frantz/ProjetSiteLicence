@@ -53,7 +53,7 @@ HTML;
       <td class='text-right'>
         <a data-toggle='tooltip' data-placement='top' title="Informations" 
          href="javascript:setEC({$EC['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>
-          <i class='icon-wrench'></i>
+          <i class='icon-info'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Liste des étudiants" 
          href="javascript:setEC({$EC['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary'>
@@ -115,7 +115,7 @@ HTML;
       <td class='text-right'>
         <a data-toggle='tooltip' data-placement='top' title="Infos/Config." 
          href="javascript:setEC({$EC['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>
-          <i class='icon-wrench'></i>
+          <i class='icon-info'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Liste des étudiants" 
          href="javascript:setEC({$EC['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary'>
