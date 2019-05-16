@@ -104,10 +104,10 @@ HTML;
         if ($semestre % 2 != 0) $annee++;
         echo <<<HTML
         <tr>
-            <th scope="col" colspan="10">Année $annee</th>
+            <th scope="col" colspan="9">Année $annee</th>
         </tr>
         <tr>
-            <th scope="col" colspan="10">Semestre $semestre</th>
+            <th scope="col" colspan="9">Semestre $semestre</th>
         </tr>
 HTML;
       for($numUE = 1; $numUE <= 5 ; $numUE++) {
@@ -143,54 +143,88 @@ HTML;
           <td>
             <span id='EC_{$ec['id']}'>{$ec['intitule']}</span>
           </td>
+          <td>
+            <span id='EPREUVE'>
 HTML;
 
-        if (!isset($data['epreuves']) || ($data['epreuves'] === null) || (sizeof($data['epreuves']) == 0)){
-          echo <<<HTML
-          <td>
-          <span id='EPREUVE'>Aucune épreuve</span>
-        </td>
-        <td>
-          <span id='EPREUVE'></span>
-        </td>
-        <td>
-          <span id='EPREUVE'></span>
-        </td>
-        <td>
-        <span id='EPREUVE'>Aucune épreuve</span>
-      </td>
-      <td>
-        <span id='EPREUVE'></span>
-      </td>
-      <td>
-        <span id='EPREUVE'></span>
-      </td>
-HTML;
-        }
-        else {
-          foreach ($data['epreuves'] as $epreuve){
+          foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+            if (($epreuve['session1'] != 0) || ($epreuve['session1disp'] != 0)){
             echo <<<HTML
-            <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['intitule']}</span>
+              {$epreuve['intitule']} +
+
+HTML;
+}
+}
+            echo <<<HTML
+              </span>
             </td>
             <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['session1']}</span>
-            </td>
-            <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['session1disp']}</span>
-            </td>
-            <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['intitule']}</span>
-            </td>
-            <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['session2']}</span>
-            </td>
-            <td>
-              <span id='EPREUVE_{$epreuve['code']}'>{$epreuve['session2disp']}</span>
-            </td>
+              <span id='EPREUVE'>
+HTML;
+          foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+            if ($epreuve['session1'] != 0){
+            echo <<<HTML
+            {$epreuve['session1']} +
 HTML;
           }
         }
+          echo <<<HTML
+          </span>
+            </td>
+            <td>
+              <span id='EPREUVE'>
+HTML;
+        foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+          if ($epreuve['session1disp'] != 0){
+          echo <<<HTML
+          {$epreuve['session1disp']} +
+HTML;
+        }
+      }
+          echo <<<HTML
+          </span>
+            </td>
+            <td>
+              <span id='EPREUVE'>
+HTML;
+          foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+            if (($epreuve['session2'] != 0) || ($epreuve['session2disp'] != 0)){
+            echo <<<HTML
+              {$epreuve['intitule']} +
+HTML;
+          }
+          }
+            echo <<<HTML
+              </span>
+            </td>
+            <td>
+              <span id='EPREUVE'>
+HTML;
+
+          foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+            if ($epreuve['session2'] != 0){
+            echo <<<HTML
+            {$epreuve['session2']} +
+HTML;
+          }
+        }
+            echo <<<HTML
+            </span>
+            </td>
+            <td>
+              <span id='EPREUVE'>
+HTML;
+          foreach (EpreuveModel::getList($ec['id']) as $epreuve){
+            if ($epreuve['session2disp'] != 0){
+            echo <<<HTML
+            {$epreuve['session2disp']} +
+HTML;
+          }
+        }
+          echo <<<HTML
+          </span>
+            </td>
+HTML;
       if ($numEC < count($data['structure'][$semestre][$numUE]['EC']) - 1){
         echo <<<HTML
       </td>
