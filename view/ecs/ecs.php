@@ -44,7 +44,7 @@ else {
 WebPage::addJSScript("public/js/active-tooltips.js");
 
 foreach($data['ECS'] as $ECS) {
-  echo "<tr><td>{$ECS['code']} - {$ECS['intitule']}</td>";
+  echo "<tr><td class='w-75'>{$ECS['code']}<small class='d-none d-md-inline'> - {$ECS['intitule']}</small></td>";
   echo "<td class='text-right'>";
   echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-warning' data-toggle='tooltip' data-placement='top' title=\"Éditer l'EC\" form='controlForm' formaction='".WEB_PATH."ecs/modifier.php' value='{$ECS['id']}'><i class='icon-wrench'></i></button>&nbsp;";
   if(UserModel::estAdmin())
