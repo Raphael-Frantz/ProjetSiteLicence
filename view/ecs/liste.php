@@ -7,6 +7,12 @@ if(isset($data['current'])) {
     WebPage::addOnlineScript("$([document.documentElement, document.body]).animate({ scrollTop: $(\"#EC_{$data['current']}\").offset().top }, 2000);");
 }
 ?>
+<?php
+WebPage::addCSSScript("vendor/DataTables/media/css/jquery.dataTables.min.css");
+WebPage::addJSScript("vendor/DataTables/media/js/jquery.dataTables.min.js");
+WebPage::addOnReady("   $('#liste').DataTable();");
+?>
+
 <section class="mytitle text-center bg-light">
   <div class="container">
     <h2 class="mb-5">Liste des ECs</h2>
@@ -37,6 +43,41 @@ function setEC(id, url) {
     }
 }
 </script>
+<script>
+$(document).ready(function () {
+
+    $('#liste').DataTable()( {
+				dom: 'ptlf',
+					language: {
+
+            url: "DataTables/media/js/French.json"
+        },
+
+        dom: "tip",
+
+        pagingType: "simple",
+
+        pageLength: 8,
+
+        order: [[1, 'desc'], [0, 'asc']],
+
+        columns: [
+
+            {type: "text"},
+
+            {type: "html"},
+
+            {orderable: false}
+
+        ]
+
+    });
+
+});
+
+
+});
+</script>
 
 <?php
 if(!isset($data['ECS']) || ($data['ECS'] === null) || (sizeof($data['ECS']) == 0)) {
@@ -50,7 +91,7 @@ if(!isset($data['ECS']) || ($data['ECS'] === null) || (sizeof($data['ECS']) == 0
 }
 else {
 ?>
-<table class="table table-striped">
+<table class="table table-striped" id="liste">
   <thead>
     <tr>
       <th scope="col">Intitulé</th>
@@ -68,7 +109,7 @@ foreach($data['ECS'] as $ECS) {
     <td class='text-right'>
       <a data-toggle='tooltip' data-placement='top' title="Informations" 
        href="javascript:setEC({$ECS['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>
-        <i class='icon-info'></i>
+        <i class='icon-wrench'></i>
       </a>
       <a data-toggle='tooltip' data-placement='top' title="Liste des étudiants" 
        href="javascript:setEC({$ECS['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary'>
