@@ -252,7 +252,7 @@ HTML;
         if($respDip) {
             $lienSupp = WEB_PATH."epreuves/supprimer.php";
             $lienModi = WEB_PATH."epreuves/modifier.php";
-            echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-primary mr-1' data-toggle='tooltip' data-placement='top' ".
+            echo "<button name='idModi' type='submit' class='btn btn-sm btn-outline-warning mr-1' data-toggle='tooltip' data-placement='top' ".
                "title=\"Modifier l'épreuve\" form='controlForm' formaction='$lienModi' value='{$epreuve['id']}'><i class='icon-wrench'></i></button>";
             echo "<button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger mr-1' data-toggle='tooltip' data-placement='top' ".
                "title=\"Supprimer l'épreuve\" form='controlForm' formaction='$lienSupp' value='{$epreuve['id']}'><i class='icon-trash'></i></button>";
