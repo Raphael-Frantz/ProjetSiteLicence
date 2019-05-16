@@ -106,7 +106,7 @@ function selectionSemestre(sem) {
     }
 }
 
-function Organigramme() {
+function parcours() {
     if(request == null) {
         request = $.ajax({
                 type: 'POST',
@@ -393,8 +393,8 @@ WebPage::addOnlineScript("var minSemestre = ".$data['diplome']->getMinSemestre()
 $checked = "";
 $active = "";
 echo <<<HTML
-<label class="btn btn-secondary $active" id='Organigramme'>
-  <input type="radio" name="organigramme" id="Organigramme" autocomplete="off" {$checked} onchange="Organigramme()"> Organigramme
+<label class="btn btn-secondary $active" id='Parcours'>
+  <input type="radio" name="parcours" id="Parcours" autocomplete="off" {$checked} onchange="parcours()"> Parcours
 </label>
 HTML;
 
