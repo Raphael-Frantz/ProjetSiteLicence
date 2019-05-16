@@ -73,7 +73,7 @@ class EpreuvesController {
         
         return Controller::push("Ajouter une épreuve", "./view/epreuves/ajouter.php", $data);
     }
-    
+
     /**
      * Modifie une épreuve.
      * #RIGHTS# : administrateur, responsable d'un diplôme contenant l'EC
@@ -83,17 +83,19 @@ class EpreuvesController {
            (!RespDiplomeModel::estResponsableDiplomeEC(UserModel::getId(), $_SESSION['current']['EC']) &&
             !UserModel::estAdmin()))
             Controller::goTo("epreuves/index.php", "", "Vous n'avez pas les droits pour réaliser cette action.");
-        
+
         // L'utilisateur a annulé
         if(isset($_POST['btnAnnuler']))
             Controller::goTo("epreuves/index.php", "L'épreuve n'a pas été modifiée.");
-        
+
         // Le formulaire a été validé
         $data = [];
         if(isset($_POST['btnModifier'])) {
-            if(!isset($_SESSION['current']['epreuve']))
+            if(!isset($_SESSION['current']['epreuve'])
+            || !isset($_POST['debut']) || !isset($_POST['fin']) || !isset($_POST['jour'])) {
                 Controller::goTo("epreuves/index.php", "", "Erreur lors de la récupération de l'épreuve.");
-                        
+            }
+
             $data['epreuve'] = self::__getFromForm();
             $data['epreuve']->setId($_SESSION['current']['epreuve']);
             
@@ -105,10 +107,46 @@ class EpreuvesController {
             if($data['epreuve']->getSession2() < 0) $erreur .= "Vous devez spécifier la répartition pour la session 2. ";            
             if($data['epreuve']->getSession1Disp() < 0) $erreur .= "Vous devez spécifier la répartition pour la session 1 pour les dispenses. ";
             if($data['epreuve']->getSession2Disp() < 0) $erreur .= "Vous devez spécifier la répartition pour la session 2 pour les dispenses. ";
-            
+
+
             if($erreur == "") {
-                if(EpreuveModel::update($data['epreuve']))
+                if(EpreuveModel::update($data['epreuve'])) {
+
+                    $debuts = $_POST['debut'];
+                    $fins = $_POST['fin'];
+                    $groupes = $_POST['groupe'];
+                    $jours = $_POST['jour'];
+
+                    if(count($debuts) != count($fins)
+                    || count($debuts) != count($groupes)
+                    || count($debuts) != count($jours)) {
+
+                        Controller::goTo("epreuves/index.php", "",
+                            "Erreur dans la reception des données. L'épreuve a été modifiée, mais pas le planning.");
+                    }
+                    else {
+
+                        for($i = 0; $i < count($debuts); $i++) {
+
+                            if(!is_numeric($groupes[$i])) {
+                                WebPage::setCurrentErrorMsg("Erreur lors du traitement du formulaire");
+                                continue;
+                            }
+
+                            $groupes[$i] = intval($groupes[$i]);
+
+                            $date = strtotime($jours[$i]);
+                            list($heureDeb, $minDeb) = sscanf($debuts[$i], '%d:%d');
+                            list($heureFin, $minFin) = sscanf($fins[$i], '%d:%d');
+
+                            EpreuveDateModel::update($data['epreuve']->getId(), $date + $heureDeb * 3600 + $minDeb * 60,
+                                $date + $heureFin * 3600 + $minFin * 60,
+                                $groupes[$i]);
+                        }
+                    }
+
                     Controller::goTo("epreuves/index.php", "L'épreuve a été modifiée.");
+                }
                 else
                     WebPage::setCurrentMsg("L'épreuve n'a pas été modifée dans la base de données.");
             }        
@@ -123,7 +161,31 @@ class EpreuvesController {
         
         if(($data['EC'] = ECModel::read(intval($_SESSION['current']['EC']))) === null)
             Controller::goTo("epreuves/index.php", "", "Erreur lors de la récupération de l'EC.");
-        
+
+        // !Modification!
+        // Récupérer la liste des groupes qui sont associés à l'épreuve
+        $data['groupes'] = EpreuveDateModel::getGroupList($data['epreuve']->getId());
+
+        foreach($data['groupes'] as $key => $value) {
+
+            if(isset($value['debut'])) {
+
+                //2011-09-29
+
+                $debut = $value['debut'];
+                $fin = $value['fin'];
+
+            }
+            else {
+                $debut = 0;
+                $fin = 0;
+            }
+
+            $data['groupes'][$key]['jour'] = date('Y-m-d', $debut);
+            $data['groupes'][$key]['debut'] = date('H:i', $debut);
+            $data['groupes'][$key]['fin'] = date('H:i', $fin);
+        }
+
         return Controller::push("Modifier une épreuve", "./view/epreuves/modifier.php", $data);
     }
 
