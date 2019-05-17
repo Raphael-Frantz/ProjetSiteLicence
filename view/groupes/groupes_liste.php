@@ -47,23 +47,23 @@ HTML;
         echo <<<HTML
         <tr id='ligne{$groupe['id']}'>
           <th scope='row'>{$groupe['intitule']}</th>
-          <td>{$type}</td>
+          <td>{$type}qdsf</td>
           <td class="text-right">
-            <a class="btn btn-sm btn-outline-primary mr-2" data-toggle='tooltip' 
+            <a class="btn btn-sm btn-outline-primary" data-toggle='tooltip' 
                data-placement='top' title="Emploi du temps" href="{$edtAction}">
                 <i class="icon-calendar"></i>
             </a>
-            <button name='idModi' type='submit' class='btn btn-sm btn-outline-warning mr-2' data-toggle='tooltip' 
+            <button name='idModi' type='submit' class='btn btn-sm btn-outline-warning' data-toggle='tooltip' 
                     data-placement='top' title="Modifier le groupe" form='controlForm' formaction='$lienModif' 
                     value='{$groupe['id']}'>
               <i class='icon-wrench'></i>
             </button>
-            <button name='groupe' type='submit' class='btn btn-sm btn-outline-primary mr-2' data-toggle='tooltip' 
+            <button name='groupe' type='submit' class='btn btn-sm btn-outline-primary' data-toggle='tooltip' 
                     data-placement='top' title="Liste des étudiants" form='controlForm' formaction='$lienGrp' 
                     value='{$groupe['id']}'>
               <i class='icon-list'></i>
             </button>
-            <button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger mr-2' data-toggle='tooltip' 
+            <button name='idSupp' type='submit' class='btn btn-sm btn-outline-danger' data-toggle='tooltip' 
                     data-placement='top' title="Supprimer le groupe" form='controlForm' formaction='$lienSupp' 
                     value='{$groupe['id']}'>
               <i class='icon-trash'></i>

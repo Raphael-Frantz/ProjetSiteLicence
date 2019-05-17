@@ -64,7 +64,7 @@ WebPage::addJSScript("public/js/active-tooltips.js");
 foreach($data['ECS'] as $ECS) {
     echo <<<HTML
   <tr id='EC_{$ECS['id']}'>
-    <td>{$ECS['code']} - {$ECS['intitule']}</td>
+    <td>{$ECS['code']}<small class='d-none d-md-inline'> - {$ECS['intitule']}</small></td>
     <td class='text-right'>
       <a data-toggle='tooltip' data-placement='top' title="Informations" 
        href="javascript:setEC({$ECS['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>

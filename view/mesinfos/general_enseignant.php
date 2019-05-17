@@ -52,23 +52,23 @@ HTML;
       <td>{$EC['nom']}</td>
       <td class='text-right'>
         <a data-toggle='tooltip' data-placement='top' title="Informations" 
-         href="javascript:setEC({$EC['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary'>
+         href="javascript:setEC({$EC['id']}, 'ecs/informations.php')" class='btn btn-sm mr-1 btn-outline-primary my-1'>
           <i class='icon-info'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Liste des étudiants" 
-         href="javascript:setEC({$EC['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary'>
+         href="javascript:setEC({$EC['id']}, 'groupesec/etudiants.php')" class='btn btn-sm mr-1 btn-outline-primary my-1'>
           <i class='icon-people'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Gestion des groupes" 
-         href="javascript:setEC({$EC['id']}, 'groupesec/index.php')" class='btn btn-sm mr-1 btn-outline-primary'>
+         href="javascript:setEC({$EC['id']}, 'groupesec/index.php')" class='btn btn-sm mr-1 btn-outline-primary my-1'>
           <i class='icon-layers'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Gestion des épreuves" 
-         href="javascript:setEC({$EC['id']}, 'epreuves/index.php')" class='btn btn-sm mr-1 btn-outline-primary'>
+         href="javascript:setEC({$EC['id']}, 'epreuves/index.php')" class='btn btn-sm mr-1 btn-outline-primary my-1'>
           <i class='icon-notebook'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Saisie des notes" 
-         href="javascript:setEC({$EC['id']}, 'notes/saisie.php')" class='btn btn-sm mr-1 btn-outline-primary'>
+         href="javascript:setEC({$EC['id']}, 'notes/saisie.php')" class='btn btn-sm mr-1 btn-outline-primary my-1'>
           <i class='icon-book-open'></i>
         </a>
         <a data-toggle='tooltip' data-placement='top' title="Gestion du présentiel"

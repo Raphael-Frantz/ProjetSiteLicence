@@ -154,6 +154,49 @@ class AccueilController {
      * Planning CC et EET
      */
     public static function planning() {
+
+        $licenceInfoID = 3; // ID dans la base de la licence d'info
+        $semestresImpaires = 0; // 1= afficher les semestres impairs, 0= afficher les semestres paires
+
+        echo "<pre>";
+
+        for($s = ($semestresImpaires ? 1 : 2); $s <= 6; $s += 2) {
+
+            echo "Semestre $s\n";
+            echo "Groupes: \n";
+            print_r(GroupeModel::getList($licenceInfoID, $s, Groupe::GRP_TD));
+            echo "UEECs: \n";
+            print_r(UEECModel::getUEEC($licenceInfoID, $s));
+        }
+
+        echo "</pre>";
+
+
+        echo "-----------------------------";
+
+        for($s = ($semestresImpaires ? 1 : 2); $s <= 6; $s += 2) {
+
+            echo "<p>Semestre $s</p>";
+
+            $groupes = GroupeModel::getList($licenceInfoID, $s, Groupe::GRP_TD);
+            echo "Groupes: " . join(", ", array_column($groupes, 'intitule'));
+
+
+            $UEs = UEECModel::getUEEC($licenceInfoID, $s)[$s];
+
+            foreach($UEs as $UE) {
+
+                foreach($UE['EC'] as $EC) {
+
+                    echo "{$EC['intitule']} / {$EC['code']} <br>";
+
+                    // Vérifier si, pour une UE donnée, il existe des épreuves dans la base de données
+                    var_dump(EpreuveDateModel::getList($EC['id']));
+                }
+            }
+        }
+
+
         return Controller::push("Planning CC et EET", "./view/current/planning.php");
     }    
     
